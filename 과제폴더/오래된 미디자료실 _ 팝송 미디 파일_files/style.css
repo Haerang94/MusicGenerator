@@ -1,0 +1,201 @@
+/*
+	공통 게시판 CSS "2019-01-28 오후 9:08:06"
+*/
+
+/* 공용																																																	*/
+
+/* 버튼 셋 */
+a.dp_btn {
+	background:linear-gradient(to bottom, #fff, #efefef);
+	background-color:#fff;
+	border-radius:3px;
+	border:1px solid #ccc;
+	color:#777;
+	cursor:pointer;
+	display:inline-block;
+	font-weight:bold;
+	line-height:10px;
+	margin:0;
+	outline:none;
+	position:relative;
+	text-align:center;
+	text-shadow:1px 1px 0 white;
+	vertical-align:middle;
+	padding:8px 10px;
+}
+a.dp_btn:link { color:#777; text-decoration:none; }
+a.dp_btn:visited { color:#777; text-decoration:none; }
+a.dp_btn:active {
+	color:#777; text-decoration:none;
+	background:linear-gradient(to bottom, #efefef, #fff);
+	border:1px solid #aaa;
+}
+a.dp_btn:hover { color:#555; text-decoration:none; }
+
+/* 라인 */
+.dp_line_dot	{ background-image:url('ico_dot.gif'); height:1px; line-height:1px; font-size:1px; margin:0 3px 0 3px; }
+
+/* 입력폼 */
+.dp_input_text	{ border:1px solid #ccc; border-radius:3px; font-size:9pt; }
+
+.dp_bebug { padding:4px 0 4px 0; border:1px solid #FF0080; margin:3px 0 3px 0; background:#FFEEF7; font-size:9pt; }
+.dp_bebug .dp_title { font-weight:bold; font-size:9pt; margin-right:5px; color:#FF0080; background:white; padding:4px; }
+
+
+
+/* 리스트 관련 																																																	*/
+.dp_list { width:100%; }
+.dp_list a:active	{ color:#333; text-decoration:none; }
+.dp_list a:hover	{ color:#333; text-decoration:none; }
+.dp_list a:link	{ color:#333; text-decoration:none; }
+.dp_list a:visited	{ color:#333; text-decoration:none; }
+.dp_list tr { text-align:center; }
+.dp_list th { font-weight:700; padding:10px 0 10px 0; border-bottom:2px solid #ddd; color:#555; }
+.dp_list td { color:#333; font-size:11pt; text-align:center; padding:10px 0 10px 0; border-bottom:1px solid #ddd; }
+.dp_list .dp_notice	{ font-weight:bold; background:#f7f7f7; }
+.dp_list .dp_title	{ text-align:left; }
+.dp_list .dp_cmt	{ background:#999; font-size:10pt; color:white; padding:2px 3px; margin-left:5px; border-radius:3px; }
+.dp_list .dp_num	{  }
+.dp_list .dp_nodata	{ height:200px; font-weight:bold; }
+
+/* 검색 UI */
+.dp_search { margin-top:15px; }
+.dp_search select { text-align:center; border:1px solid #ddd; font-size:9pt; height:28px; }
+.dp_search .dp_search_word	{ width:250px; border:1px solid #ddd; font-size:9pt; margin:0 3px; height:24px; border-radius:3px; }
+
+.dp_btn_wrap_list	{ margin-top:10px; text-align:right; }
+
+
+
+/* 조회 관련																																													 */
+
+.dp_view { width:100%; }
+.dp_view div, .dp_view td { color:#333; }
+.dp_view .dp_title	{ border:2px solid silver; padding:8px; border-radius:5px; }
+.dp_view .dp_wdate	{ text-align:right; padding:10px 0 10px 0; }
+.dp_view .dp_writer	{ float:left; padding:10px 0 10px 0; }
+.dp_view .dp_vcnt	{ float:right; padding:10px 0 10px 0; }
+.dp_view .dp_contents { padding:10px 5px; line-height:190%; font-size:11pt; color:#333; word-break:break-all; word-wrap:break-word; xmin-height:330px; }
+.dp_view .dp_contents span { font-size:11pt; }
+.dp_view .dp_contents center img { border-radius:7px; }
+.dp_view .dp_contents_img_wrap { margin:0 0 10px 0; }
+.dp_view .dp_contents_img { margin-top:5px; text-align:center; }
+.dp_view .dp_file		{ height:20px; display:block; }
+.dp_view .dp_file_name	{ float:right; margin-right:5px; }
+
+/* 비로그인 수정,삭제용 패스워드 UI */
+.dp_view_pwd { border:2px solid red; border-radius:5px; padding:10px; margin-top:10px; display:none; background:#FFFFDD; }
+.dp_view_pwd td, .dp_view_pwd div { font-size:9pt; }
+.dp_view_pwd .dp_input_text { padding:3px; margin:0 5px; height:20px; }
+.dp_view_pwd .dp_ment { color:red; text-align:center; margin-top:10px; }
+
+.dp_btn_wrap_view { margin-top:20px; padding:10px 0; text-align:center; }
+.dp_btn_wrap_view a { line-height:30px; }
+
+
+
+/* 등록, 수정 관련																																																 */
+
+.dp_write { width:100%; }
+.dp_write th { font-size:9pt; padding:10px 0 10px 0; border-bottom:1px solid #ddd; width:120px; color:#555; }
+.dp_write td { font-size:9pt; padding:10px 21px 10px 0; border-bottom:1px solid #ddd; }
+.dp_write .dp_input	{ border:1px solid #ddd; border-radius:3px; font-size:9pt; padding:5px; width:100%; }
+.dp_write .dp_input_textarea { line-height:20px; }
+.dp_write .wauto { padding-right:10px; }
+
+
+/* 코멘트 */
+.dp_cmt_wrap { }
+
+.dp_cmt_write { border:2px solid #999; left:0; position:relative; top:0; width:100%; z-index:999; border-radius:2px; }
+.dp_cmt_write th { background:#f6f6f6; vertical-align:middle; }
+.dp_cmt_write td { background:white; padding:3px; vertical-align:middle; }
+.dp_cmt_write input { padding:3px; }
+.dp_cmt_write textarea { width:100%; height:90px; padding:5px; line-height:18px; }
+.dp_cmt_write .dp_cont { text-align:center; padding:3px 15px 3px 3px; }
+.dp_cmt_write .dp_btn_area { padding:5px; background:#f6f6f6; border-left:1px solid silver; text-align:center; }
+.dp_cmt_write .dp_col1 { width:100px; }
+.dp_cmt_write .dp_col2 { width:auto; }
+.dp_cmt_write .dp_col3 { width:70px; }
+
+.dp_cmt_list_wrap { margin-top:5px; }
+.dp_cmt_list_wrap .dp_line_dot { margin-top:3px; margin-bottom:3px; }
+
+.dp_cmt_list_wrap .dp_cmt_list		{ border:1px solid #ddd; background:white; }
+.dp_cmt_list_wrap .dp_on			{ border:1px solid #444; }
+.dp_cmt_list_wrap .dp_reply_ico		{ left:-19px; top:7px; position:absolute; color:gray; }
+.dp_cmt_list_wrap .dp_header		{ background:#efefef; padding:6px; }
+	.dp_cmt_list_wrap .dp_name		{ float:left; font-weight:bold; font-size:10pt; }
+	.dp_cmt_list_wrap .dp_userid	{ float:left; color:#666; }
+	.dp_cmt_list_wrap .dp_date		{ float:left; color:#999; font-family:tahoma; font-size:8pt; padding-left:4px; }
+	.dp_cmt_list_wrap .dp_btn_area	{ float:right; color:#666; }
+	.dp_cmt_list_wrap .dp_btn_area span { cursor:pointer; margin-left:3px; }
+.dp_cmt_list_wrap .dp_cont { text-align:justify; padding:7px; line-height:18px; word-break:break-all; word-wrap:break-word; }
+
+.dp_cmt_list_wrap .dp_del_ui { border:2px solid red; padding:5px; background:#FFECEC; border-radius:5px; box-shadow:0 0 3px gray; }
+.dp_cmt_list_wrap .dp_del_ui .dp_ment { color:red; text-align:center; font-weight:bold; margin-bottom:5px; }
+.dp_cmt_list_wrap .dp_del_btn_area { text-align:center; }
+
+
+/* 비밀글 패스워드 입력UI */
+.dp_secret { padding:30px 0 30px 0; }
+.dp_secret td, .dp_secret div { font-size:9pt; }
+.dp_secret .dp_ment { text-align:center; font-weight:bold; color:red; margin:20px 0 0 0; }
+
+/* 사용중지 게시판 안내 */
+.dp_closed_wrap { padding:50px; text-align:center; }
+.dp_closed_wrap .dp_ment { margin-top:20px; font-weight:bold; font-size:10pt; }
+
+.dp_btn_wrap_write	{ padding:10px 0; text-align:center; }
+.dp_btn_wrap_write a { width:60px; }
+
+
+
+/* 페이징																																																	 */
+.dp_paging {
+	margin-top:20px;
+	text-align:center;
+}
+
+.dp_paging a, .dp_paging span {
+	color:#555;
+	display:inline-block;
+	font-size:10.5pt;
+	height:40px;
+	line-height:40px;
+	padding:0;
+	text-align:center;
+	width:40px;
+}
+
+.dp_paging a:hover {
+	font-weight:bold;
+	outline:none;
+}
+
+.dp_paging .now {
+	background:#777;
+	border-radius:3px;
+	color:#fff;
+	font-weight:bold;
+	text-shadow:0 0 2px #000;
+}
+
+.dp_paging .side {
+	background:#f6f6f6;
+	border-radius:2px;
+	border:1px solid silver;
+	font-weight:bold;
+	height:38px;
+	line-height:38px;
+	margin:0 2px;
+}
+
+.dp_paging .disabled { color:#888; }
+
+.search_order { text-align:center; margin-top:10px; }
+.search_order label input { position:relative; top:4px; }
+
+.gasa_title { border-top:1px solid #ddd; padding-top:10px; font-weight:bold; font-size:12pt !important; text-align:center; }
+.gasa { margin-bottom:30px; margin-top:10px; }
+.gasa td { line-height:170%; font-size:12pt; color:#222; text-shadow:1px 1px 0 #f9f9f9; }

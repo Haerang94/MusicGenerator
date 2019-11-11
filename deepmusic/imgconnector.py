@@ -18,7 +18,7 @@ Image connector interface
 
 """
 
-import cv2 as cv
+#import cv2 as cv
 import numpy as np
 
 import deepmusic.songstruct as music  # Should we use that to tuncate the top and bottom image ?
@@ -52,11 +52,11 @@ class ImgConnector:
         g = np.zeros(piano_roll_int.shape, dtype=np.uint8)    # Empty channel
         r = piano_roll_int * note_played.astype(np.uint8)     # Notes played
 
-        img = cv.merge((b, g, r))
+        #img = cv.merge((b, g, r))
 
         # TODO: We could insert a first column indicating the piano keys (black/white key)
 
-        cv.imwrite(filename + '.png', img)
+        #cv.imwrite(filename + '.png', img)
 
     @staticmethod
     def get_input_type():
