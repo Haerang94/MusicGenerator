@@ -1,4 +1,4 @@
-# Copyright 2016 Conchylicultor. All Rights Reserved.
+﻿# Copyright 2016 Conchylicultor. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -162,17 +162,23 @@ class Model:
     def _build_network(self):
         """ Create the computational graph
         """
+        #텐서플로우 세션과 그래프의 초기화, 헬퍼 클래스로 한 줄로 요약 가능 
         input_dim = ModuleLoader.batch_builders.get_module().get_input_dim()
 
         # Placeholders (Use tf.SparseTensor with training=False instead) (TODO: Try restoring dynamic batch_size)
+        #입력값 (음표), 그래프의 입력값이 된다 
         with tf.name_scope('placeholder_inputs'):
             self.inputs = [
                 tf.placeholder(
                     tf.float32,  # -1.0/1.0 ? Probably better for the sigmoid
-                    [self.args.batch_size, input_dim],  # TODO: Get input size from batch_builder
-                    name='input')
+                    [self.args.batch_size, input_dim],  
+                    #입력 데이터를 얼마나 넣어줄 것인가 
+                    # TODO: Get input size from batch_builder
+                    name='input')#input이라고 부를 것이다 
                 for _ in range(self.args.sample_length)
                 ]
+            #target은 클래스이다, 키가 눌렸는 지 안눌렸는 지 이진 분류를 해준다, 88 binary (88개의 키가 눌렸는 지 안 눌렸는지 분류해준다)
+            #지도분류, 라벨링 작업을 위해서 해주는 것이다 
         with tf.name_scope('placeholder_targets'):
             self.targets = [
                 tf.placeholder(
@@ -181,6 +187,7 @@ class Model:
                     name='target')
                 for _ in range(self.args.sample_length)
                 ]
+            #은닉 상태를 위해서 placeholder를 하나 더 만들어준다 
         with tf.name_scope('placeholder_use_prev'):
             self.use_prev = [
                 tf.placeholder(
@@ -191,6 +198,8 @@ class Model:
                 ]
 
         # Define the network
+        #수작업으로 반복문을 만들어준다. Keras가 아니라 tensorflow를 사용하기 때문에
+        #수동적으로 입력값의 히든상태를 다음 입력값으로 넣어주는 작업을 해준다 
         self.loop_processing = ModuleLoader.loop_processings.build_module(self.args)
         def loop_rnn(prev, i):
             """ Loop function used to connect one output of the rnn to the next input.
@@ -206,16 +215,18 @@ class Model:
 
             # On training, we force the correct input, on testing, we use the previous output as next input
             return tf.cond(self.use_prev[i], lambda: next_input, lambda: self.inputs[i])
-
+        # Build: seq2seq model
         # TODO: Try attention decoder/use dynamic_rnn instead
-        self.outputs, self.final_state = tf.nn.seq2seq.rnn_decoder(
+        #최종 상태에서 예측한 음표를 출력값으로 낸다
+        #최종 상태는 디코더 신경망에서 마지막 히든 레이더에 해당한다 
+        self.outputs, self.final_state = tf.contrib.legacy_seq2seq.rnn_decoder(
             decoder_inputs=self.inputs,
             initial_state=None,  # The initial state is defined inside KeyboardCell
             cell=KeyboardCell(self.args),
             loop_function=loop_rnn
         )
 
-        # For training only
+        
         if not self.args.test:
             # Finally, we define the loss function
 
@@ -235,7 +246,12 @@ class Model:
             self.learning_rate_policy = ModuleLoader.learning_rate_policies.build_module(self.args)  # Load the chosen policies
 
             # TODO: If train on different length, check that the loss is proportional to the length or average ???
-            loss_fct = tf.nn.seq2seq.sequence_loss(
+            # For training only #학습단계
+        #loss function 손실함수 정의하기 
+        #여러 음악이 동시에 눌리고 있다는 것은 다중 클래스 분류 문제이다
+        #필요하다면 출력값이 여러 음표가 될 수 있는 것이다  => 크로스 엔트로피 사용
+        #두 확률분포의 차이를 측정할 때 사용,서로다른 음표의 차이를 알 수 있기 때문이다  
+            loss_fct = tf.contrib.legacy_seq2seq.sequence_loss(
                 self.outputs,
                 self.targets,
                 [tf.constant(self.target_weights_policy.get_weight(i), shape=self.targets[0].get_shape()) for i in range(len(self.targets))],  # Weights
@@ -243,11 +259,12 @@ class Model:
                 average_across_timesteps=True,  # Before: I think it's best for variables length sequences (specially with the target weights=0), isn't it (it implies also that short sequences are less penalized than long ones) ? (TODO: For variables length sequences, be careful about the target weights)
                 average_across_batch=True  # Before: Penalize by sample (should allows dynamic batch size) Warning: need to tune the learning rate
             )
-            tf.scalar_summary('training_loss', loss_fct)  # Keep track of the cost
+            tf.summary.scalar('training_loss', loss_fct)  # Keep track of the cost
 
             self.current_learning_rate = tf.placeholder(tf.float32, [])
 
             # Initialize the optimizer
+            #최적화 함수 중 가장 효용도가 높은 알고리즘으로 증명되어 일반적으로 많이 사용된다 
             opt = tf.train.AdamOptimizer(
                 learning_rate=self.current_learning_rate,
                 beta1=0.9,

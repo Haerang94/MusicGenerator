@@ -166,8 +166,8 @@ class Composer:
             self.model = Model(self.args)
 
         # Saver/summaries
-        self.writer = tf.train.SummaryWriter(os.path.join(self.model_dir, 'train'))
-        self.writer_test = tf.train.SummaryWriter(os.path.join(self.model_dir, 'test'))
+        self.writer = tf.summary.FileWriter(os.path.join(self.model_dir, 'train'))
+        self.writer_test = tf.summary.FileWriter(os.path.join(self.model_dir, 'test'))
         self.saver = tf.train.Saver(max_to_keep=200)  # Set the arbitrary limit ?
 
         # TODO: Fixed seed (WARNING: If dataset shuffling, make sure to do that after saving the
@@ -208,7 +208,7 @@ class Composer:
         # Specific training dependent loading (Warning: When restoring a model, we don't restore the progression
         # bar, nor the current batch.)
 
-        merged_summaries = tf.merge_all_summaries()
+        merged_summaries = tf.summary.merge_all()
         if self.glob_step == 0:  # Not restoring from previous run
             self.writer.add_graph(self.sess.graph)  # First time only
 

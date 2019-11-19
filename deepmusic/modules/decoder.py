@@ -1,3 +1,4 @@
+
 # Copyright 2016 Conchylicultor. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +37,7 @@ class DecoderNetwork:
         """
         self.args = args
 
+    
     def build(self):
         """ Initialize the weights of the model
         """
@@ -73,7 +75,10 @@ class Rnn(DecoderNetwork):
         super().__init__(args)
         self.rnn_cell = None
         self.project_key = None  # Fct which project the decoder output into a single key space
-
+    
+    
+ 
+    
     def build(self):
         """ Initialize the weights of the model
         """
@@ -128,7 +133,8 @@ class Perceptron(DecoderNetwork):
 
         self.project_hidden = None  # Fct which decode the previous state
         self.project_keyboard = None  # Fct which project the decoder output into the keyboard space
-
+  
+    
     def build(self):
         """ Initialize the weights of the model
         """
@@ -171,23 +177,33 @@ class Lstm(DecoderNetwork):
 
         self.rnn_cell = None
         self.project_keyboard = None  # Fct which project the decoder output into the ouput space
+    
+    def anotherBuild(self):
+        new_cell=tf.nn.rnn_cell.BasicLSTMCell(self.args.hidden_size, state_is_tuple=True)
+        return new_cell
 
     def build(self):
         """ Initialize the weights of the model
         """
         # TODO: Control over the the Cell using module arguments instead of global arguments (hidden_size and num_layer) !!
         # RNN network
-        rnn_cell = tf.nn.rnn_cell.BasicLSTMCell(self.args.hidden_size, state_is_tuple=True)  # Or GRUCell, LSTMCell(args.hidden_size)
+	## 매트릭스 에러로 인해 수정된 부분 
+        new_cell = tf.nn.rnn_cell.BasicLSTMCell(self.args.hidden_size, state_is_tuple=True)  # Or GRUCell, LSTMCell(args.hidden_size)
         if not self.args.test:  # TODO: Should use a placeholder instead
-            rnn_cell = tf.nn.rnn_cell.DropoutWrapper(rnn_cell, input_keep_prob=1.0, output_keep_prob=0.9)  # TODO: Custom values
-        rnn_cell = tf.nn.rnn_cell.MultiRNNCell([rnn_cell] * self.args.num_layers, state_is_tuple=True)
+            new_cell = tf.nn.rnn_cell.DropoutWrapper(new_cell, input_keep_prob=1.0, output_keep_prob=0.9)  # TODO: Custom values
+        	
+	 #[] 이 위치에 단순히 new_cell을 써주면 매트릭스크기가 맞지 않아 에러 발생
+            rnn_cell = tf.nn.rnn_cell.MultiRNNCell([ for tf.nn.rnn_cell.BasicLSTMCell(self.args.hidden_size, state_is_tuple=True) in range(self.args.num_layers)], state_is_tuple=True)
 
         self.rnn_cell = rnn_cell
-
+	
         # For projecting on the keyboard space
         self.project_output = tfutils.single_layer_perceptron([self.args.hidden_size, 12 + 1],  # TODO: HACK: Input/output space hardcoded !!!
-                                                               'project_output')  # Should we do the activation sigmoid here ?
+                                                              'project_output')  # Should we do the activation sigmoid here ?
 
+
+
+    
     def init_state(self):
         """ Return the initial cell state
         """
@@ -201,3 +217,4 @@ class Lstm(DecoderNetwork):
         # No activation function here: SoftMax is computed by the loss function
 
         return next_output, next_state
+
